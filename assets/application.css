@@ -6,14 +6,44 @@ body {
   background: transparent;
   height: 100%; }
 
+.status {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  padding: 0 20px; }
+  .status .status-inner {
+    transition: all .3s ease-out;
+    -webkit-transform: scale(1.2, 1.2);
+    opacity: 0;
+    -webkit-filter: blur(10px);
+    max-width: 500px;
+    margin: 0 auto;
+    background: #666;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 1px 5px #888888;
+    -o-box-shadow: 0 1px 5px #888888;
+    -moz-box-shadow: 0 1px 5px #888888;
+    box-shadow: 0 1px 5px #888888;
+    font-size: 12px;
+    font-weight: 200;
+    text-align: center;
+    line-height: 20px;
+    color: white; }
+    .status .status-inner.visible {
+      opacity: 1;
+      -webkit-filter: none;
+      -webkit-transform: scale(1, 1); }
+
 .main {
   background: white;
   position: absolute;
   left: 20px;
   right: 20px;
   top: 20px;
-  bottom: 20px;
-  /*border: 2px solid $gray;*/
+  bottom: 40px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;

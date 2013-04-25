@@ -1,9 +1,53 @@
 # Mousetrap bindings
 #
-notes = JSON.parse(localStorage.getItem('littlenotes')) || {}
+notes    = JSON.parse(localStorage.getItem('littlenotes')) || {}
+mode     = "notes"
+email    = null
+password = null
+
+statusTimeout = null
+showStatus = window.showStatus = (message, persistent=false) ->
+  $('#status').text(message).addClass('visible')
+  clearTimeout(statusTimeout)
+  unless persistent
+    statusTimeout = setTimeout ->
+      $('#status').removeClass('visible')
+    , 3000
+
+clearStatus = ->
+  $('#status').removeClass('visible')
+
+sendCredentials = window.sendCredentials = ->
+  $.ajax({
+    url: "/#{mode.split(":")[0]}"
+    contentType: 'application/json'
+    type: "POST"
+    data: JSON.stringify({
+      email: email,
+      password: password
+    })
+  }).done( ->
+    if mode.match /^register/
+      showStatus "Signed up. You are now logged in."
+    else if mode.match /^login/
+      showStatus "Logged in."
+  ).fail( (jqxhr, textStatus, errorThrown) ->
+    if jqxhr.status == 422
+      showStatus "Error: #{obj.responseText}", true
+    else
+      showStatus "Sorry, something went wrong.", true
+  ).always( ->
+    mode     = "notes"
+    email    = null
+    password = null
+    $('#searchbox').removeAttr('disabled').attr('type', 'text')
+  )
 
 Mousetrap.bind 'command+shift+l', ->
   $('#searchbox').focus()
+
+Mousetrap.bind ':', ->
+  $('#searchbox').text(':').focus()
 
 Mousetrap.bind 'esc', ->
   $('<input />')
@@ -41,6 +85,33 @@ $('#searchbox').on 'keyup', (evt) ->
       $(el).trigger('change')
       return
     when 13 # enter
+      if mode.match(/^(?:register|login):email/)
+        email = @value
+        showStatus 'Enter a password.', true
+        @type = 'password'
+        @value = ""
+        mode = "#{mode.split(":")[0]}:password"
+        return
+      else if mode.match(/^(?:register|login):password/)
+        password = @value
+        showStatus 'Logging in...', true
+        @value = ""
+        @type = "text"
+        $(this).attr('disabled', 'disabled')
+        sendCredentials()
+        return
+
+      switch @value
+        when ":register"
+          showStatus 'Enter an email address.', true
+          @value = ""
+          mode = "register:email"
+          return
+        when ":login", ":signin", ":log_in", ":sign_in"
+          showStatus 'Enter an email address.', true
+          @value = ""
+          mode = "login:email"
+          return
       currentValue = if _.isEmpty(el.value) then @value else el.value
       $('#editor').attr('data-current-note', currentValue)
       $('#editor').text(notes[currentValue] || '')
