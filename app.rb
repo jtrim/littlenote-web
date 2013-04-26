@@ -69,12 +69,9 @@ before /\/register|\/login/ do
 end
 
 get '/' do
-  if !defined?(@index_html) || !@index_html
-    puts "Setting html in mem"
-    @index_html = File.read(File.expand_path("../index.html", __FILE__))
-  end
-  etag Digest::SHA1.hexdigest(@index_html)
-  @index_html
+  index = File.read(File.expand_path("../index.html", __FILE__))
+  etag Digest::SHA1.hexdigest index
+  index
 end
 
 post '/register' do
