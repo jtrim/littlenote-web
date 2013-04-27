@@ -1,21 +1,12 @@
-class App.RegisterCommand extends Backbone.View
+class App.RegisterCommand extends App.Command
 
   mode: 'email'
 
-  constructor: (searchbox) ->
-    @searchbox = searchbox
-    super el: @searchbox.el
-
   initialize: ->
-    @searchbox.undelegateEvents()
-    @searchbox.$el.val ''
     App.StatusBar.show "Enter your email"
+    super
 
-  events:
-    "keyup": "onKeyUp"
-
-  onKeyUp: (event) ->
-    return unless @wasEnterKey(event)
+  return: ->
     switch @mode
       when "email"
         App.StatusBar.show "Enter a password"
@@ -49,6 +40,3 @@ class App.RegisterCommand extends Backbone.View
       @undelegateEvents()
       @searchbox.delegateEvents()
     )
-
-  wasEnterKey: (event) ->
-    event.keyCode == 13

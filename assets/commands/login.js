@@ -7,29 +7,18 @@
 
     __extends(LoginCommand, _super);
 
-    LoginCommand.prototype.mode = 'email';
-
-    function LoginCommand(searchbox) {
-      this.searchbox = searchbox;
-      LoginCommand.__super__.constructor.call(this, {
-        el: this.searchbox.el
-      });
+    function LoginCommand() {
+      return LoginCommand.__super__.constructor.apply(this, arguments);
     }
 
+    LoginCommand.prototype.mode = 'email';
+
     LoginCommand.prototype.initialize = function() {
-      this.searchbox.undelegateEvents();
-      this.searchbox.$el.val('');
-      return App.StatusBar.show("Enter your email");
+      App.StatusBar.show("Enter your email");
+      return LoginCommand.__super__.initialize.apply(this, arguments);
     };
 
-    LoginCommand.prototype.events = {
-      "keyup": "onKeyUp"
-    };
-
-    LoginCommand.prototype.onKeyUp = function(event) {
-      if (!this.wasEnterKey(event)) {
-        return;
-      }
+    LoginCommand.prototype["return"] = function() {
       switch (this.mode) {
         case "email":
           App.StatusBar.show("Enter your password");
@@ -64,17 +53,12 @@
           return App.StatusBar.show("Sorry, something went wrong.", true);
         }
       }).always(function() {
-        _this.undelegateEvents();
-        return _this.searchbox.delegateEvents();
+        return _this.tearDown();
       });
-    };
-
-    LoginCommand.prototype.wasEnterKey = function(event) {
-      return event.keyCode === 13;
     };
 
     return LoginCommand;
 
-  })(Backbone.View);
+  })(App.Command);
 
 }).call(this);

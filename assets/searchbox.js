@@ -26,7 +26,8 @@
         return _this.$el.text(':').focus();
       });
       return Mousetrap.bind('esc', function() {
-        return _this.blur();
+        _this.blur();
+        return $(document).trigger("littlenote:escape");
       });
     };
 

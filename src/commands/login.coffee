@@ -1,21 +1,12 @@
-class App.LoginCommand extends Backbone.View
+class App.LoginCommand extends App.Command
 
   mode: 'email'
 
-  constructor: (searchbox) ->
-    @searchbox = searchbox
-    super el: @searchbox.el
-
   initialize: ->
-    @searchbox.undelegateEvents()
-    @searchbox.$el.val ''
     App.StatusBar.show "Enter your email"
+    super
 
-  events:
-    "keyup": "onKeyUp"
-
-  onKeyUp: (event) ->
-    return unless @wasEnterKey(event)
+  return: ->
     switch @mode
       when "email"
         App.StatusBar.show "Enter your password"
@@ -46,9 +37,5 @@ class App.LoginCommand extends Backbone.View
       else
         App.StatusBar.show "Sorry, something went wrong.", true
     ).always( =>
-      @undelegateEvents()
-      @searchbox.delegateEvents()
+      @tearDown()
     )
-
-  wasEnterKey: (event) ->
-    event.keyCode == 13

@@ -7,29 +7,18 @@
 
     __extends(RegisterCommand, _super);
 
-    RegisterCommand.prototype.mode = 'email';
-
-    function RegisterCommand(searchbox) {
-      this.searchbox = searchbox;
-      RegisterCommand.__super__.constructor.call(this, {
-        el: this.searchbox.el
-      });
+    function RegisterCommand() {
+      return RegisterCommand.__super__.constructor.apply(this, arguments);
     }
 
+    RegisterCommand.prototype.mode = 'email';
+
     RegisterCommand.prototype.initialize = function() {
-      this.searchbox.undelegateEvents();
-      this.searchbox.$el.val('');
-      return App.StatusBar.show("Enter your email");
+      App.StatusBar.show("Enter your email");
+      return RegisterCommand.__super__.initialize.apply(this, arguments);
     };
 
-    RegisterCommand.prototype.events = {
-      "keyup": "onKeyUp"
-    };
-
-    RegisterCommand.prototype.onKeyUp = function(event) {
-      if (!this.wasEnterKey(event)) {
-        return;
-      }
+    RegisterCommand.prototype["return"] = function() {
       switch (this.mode) {
         case "email":
           App.StatusBar.show("Enter a password");
@@ -69,12 +58,8 @@
       });
     };
 
-    RegisterCommand.prototype.wasEnterKey = function(event) {
-      return event.keyCode === 13;
-    };
-
     return RegisterCommand;
 
-  })(Backbone.View);
+  })(App.Command);
 
 }).call(this);

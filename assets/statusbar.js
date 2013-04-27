@@ -13,6 +13,10 @@
 
     StatusBar.prototype.el = "#status";
 
+    StatusBar.clear = function() {
+      return this.status.$el.removeClass('visible');
+    };
+
     StatusBar.show = function(message, persistent) {
       var _this = this;
       if (persistent == null) {

@@ -8,7 +8,9 @@ class App.SearchBox extends Backbone.View
   initialize: ->
     Mousetrap.bind 'command+shift+l', => @$el.focus()
     Mousetrap.bind ':', => @$el.text(':').focus()
-    Mousetrap.bind 'esc', => @blur()
+    Mousetrap.bind 'esc', =>
+      @blur()
+      $(document).trigger("littlenote:escape")
 
   onKeyUp: (event) ->
     return unless @wasEnterKey(event)
