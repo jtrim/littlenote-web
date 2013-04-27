@@ -37,6 +37,8 @@
       switch (this.el.value) {
         case ":register":
           return new App.RegisterCommand(this);
+        case ":login":
+          return new App.LoginCommand(this);
       }
     };
 

@@ -14,6 +14,7 @@ class App.SearchBox extends Backbone.View
     return unless @wasEnterKey(event)
     switch @el.value
       when ":register" then new App.RegisterCommand(this)
+      when ":login" then new App.LoginCommand(this)
 
   blur: ->
     $('<input />')
