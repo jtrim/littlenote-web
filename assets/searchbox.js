@@ -40,6 +40,8 @@
           return new App.RegisterCommand(this);
         case ":login":
           return new App.LoginCommand(this);
+        case ":logout":
+          return new App.LogoutCommand(this);
       }
     };
 

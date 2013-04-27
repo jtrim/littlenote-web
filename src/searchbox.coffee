@@ -17,6 +17,7 @@ class App.SearchBox extends Backbone.View
     switch @el.value
       when ":register" then new App.RegisterCommand(this)
       when ":login" then new App.LoginCommand(this)
+      when ":logout" then new App.LogoutCommand(this)
 
   blur: ->
     $('<input />')
