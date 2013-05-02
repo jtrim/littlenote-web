@@ -32,16 +32,17 @@
     };
 
     SearchBox.prototype.onKeyUp = function(event) {
-      if (!this.wasEnterKey(event)) {
-        return;
-      }
-      switch (this.el.value) {
-        case ":register":
-          return new App.RegisterCommand(this);
-        case ":login":
-          return new App.LoginCommand(this);
-        case ":logout":
-          return new App.LogoutCommand(this);
+      if (this.wasEnterKey(event)) {
+        switch (this.el.value) {
+          case ":register":
+            return new App.RegisterCommand(this);
+          case ":login":
+            return new App.LoginCommand(this);
+          case ":logout":
+            return new App.LogoutCommand(this);
+        }
+      } else {
+        return console.log(this.el.value);
       }
     };
 

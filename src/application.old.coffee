@@ -59,15 +59,6 @@ $('#searchbox').on 'focus', (evt) ->
 $('#searchbox').on 'blur', (evt) ->
   $('.search-results').hide()
 
-Mousetrap.bind '} }', ->
-  el = document.getElementById("#editor")
-  range = document.createRange()
-  sel = window.getSelection()
-  range.setStart(el.childNodes[0], el.innerText.length)
-  range.collapse(true)
-  sel.removeAllRanges()
-  sel.addRange(range)
-
 $('#searchbox').on 'keyup', (evt) ->
   el = $('#search-results')[0]
   switch evt.keyCode

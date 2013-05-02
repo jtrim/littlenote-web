@@ -120,7 +120,8 @@ end
 get '/notes' do
   content_type 'application/json'
   halt 403 unless session[:current_user]
-  JSON.parse(REDIS.get(session[:current_user]["key"]))["notes"] # notes is stored as JSON
+  notes_json = JSON.parse(REDIS.get(session[:current_user]["key"]))["notes"]
+  JSON.parse(notes_json).inject([]) { |memo, (k,v)| memo << {id: k, title: k, value: v} }.to_json
 end
 
 patch '/notes' do
